@@ -112,6 +112,9 @@ sudo dpkg -i linux-*-4.4.43-xenomai-3.0.6*.deb
 #pushd xeno-build
 #../xenomai-3.0.6/configure --with-core=cobalt --enable-smp --enable-pshared --host=i686-linux --enable-dlopen-libs
 #sudo make install
+#update the so directory
+#echo /usr/xenomai/lib > /etc/ld.so.conf.d/xenomai.conf
+#sudo ldconfig
 #popd
 
 
@@ -134,5 +137,6 @@ sudo dpkg -i linux-*-4.4.43-xenomai-3.0.6*.deb
 
 #命令行参数添加孤立cpu。
 #修改/boot/grub/grub.conf文件，比如孤立cpu5~8核（cpu id对应4~7），添加isolcpus=4,5,6,7至内核命令行，逗号分隔。
+# isolcpus=2,3 xenomai.supported_cpus=0xc
 #孤立某一个内核后，让linuxcnc的调度过程运行在此内核上面
 
