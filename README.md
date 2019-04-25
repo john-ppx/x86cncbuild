@@ -6,6 +6,11 @@ The scripe is auto build linux kernal+xenomai for linuxcnc
 - build xenomai
 - build linuxcnc
 
+实验过的版本(不带RTnet)
+xenomai 3.0.8
+ipipe 4.4.43-x86-8
+kernel 4.4.43
+
 
 Recommended options:
 

@@ -22,7 +22,7 @@ wget https://xenomai.org/downloads/xenomai/stable/xenomai-$XENO_VER.tar.bz2
 fi
 
 # Fetch ipipe
-if [ ! -f ipipe-core-$IPIPE_VER.patch]; then
+if [ ! -f ipipe-core-$IPIPE_VER.patch ]; then
 wget https://xenomai.org/downloads/ipipe/v4.x/x86/ipipe-core-$IPIPE_VER.patch
 fi
 
@@ -55,6 +55,7 @@ fi
 # Patch kernel
 xenomai-$XENO_VER/scripts/prepare-kernel.sh --linux=linux-$KERNEL_VER --ipipe=ipipe-core-$IPIPE_VER.patch --arch=x86
 
+exit
 pushd linux-$KERNEL_VER
 # compile kernel
 #arith OK
@@ -97,6 +98,7 @@ fakeroot make-kpkg --initrd -j4 kernel_image kernel_headers
 #sudo update-grub
 #popd
 popd
+#手工安装实时内核,并设置grub默认启动此内核
 #sudo dpkg -i linux-*-$KERNEL_VER-xenomai-$XENO_VER*.deb
 
 
