@@ -1,5 +1,9 @@
 
 
+XENO_VER=3.0.8
+IPIPE_VER=4.9.38-x86-4
+KERNEL_VER=4.9.38
+
 # kernel nessary
 sudo apt-get install gcc kernel-package libc6-dev tk8.6 libncurses5-dev fakeroot bin86 libssl-dev build-essential
 
@@ -13,40 +17,32 @@ sudo apt-get install libudev-dev libmodbus-dev libusb-1.0-0-dev \
 # 1. Fetch necessary code
 
 # Fetch xenomai
-if [ ! -f xenomai-3.0.6.tar.bz2 ]; then
-wget https://xenomai.org/downloads/xenomai/stable/xenomai-3.0.6.tar.bz2
+if [ ! -f xenomai-$XENO_VER.tar.bz2 ]; then
+wget https://xenomai.org/downloads/xenomai/stable/xenomai-$XENO_VER.tar.bz2
 fi
 
 # Fetch ipipe
-if [ ! -f ipipe-core-4.4.43-x86-8.patch ]; then
-wget https://xenomai.org/downloads/ipipe/v4.x/x86/ipipe-core-4.4.43-x86-8.patch
+if [ ! -f ipipe-core-$IPIPE_VER.patch]; then
+wget https://xenomai.org/downloads/ipipe/v4.x/x86/ipipe-core-$IPIPE_VER.patch
 fi
 
 # Fetch kernel
-if [ ! -f linux-4.4.43.tar.gz ]; then
-wget https://mirrors.edge.kernel.org/pub/linux/kernel/v4.x/linux-4.4.43.tar.gz 
+if [ ! -f linux-$KERNEL_VER.tar.gz ]; then
+wget https://mirrors.aliyun.com/linux-kernel/v4.x/linux-$KERNEL_VER.tar.gz
+#wget https://mirrors.edge.kernel.org/pub/linux/kernel/v4.x/linux-$KERNEL_VER.tar.gz 
 fi
 
-# Fetch linuxcnc
-if [ ! -f v2.7.14 ]; then
-wget https://codeload.github.com/LinuxCNC/linuxcnc/tar.gz/v2.7.14
+if [ ! -d xenomai-$XENO_VER ]; then
+tar xjf xenomai-$XENO_VER.tar.bz2
 fi
 
-if [ ! -d xenomai-3.0.6 ]; then
-tar xjf xenomai-3.0.6.tar.bz2
+if [ ! -d linux-$KERNEL_VER ]; then
+tar xf linux-$KERNEL_VER.tar.gz 
 fi
 
-if [ ! -d linux-4.4.43 ]; then
-tar xf linux-4.4.43.tar.gz 
-fi
 
-if [ ! -d linuxcnc-2.7.14 ]; then
-tar xf v2.7.14
-fi 
-
-
-if [ ! linux-4.4.43/build ]; then
-    mkdir linux-4.4.43/build
+if [ ! linux-$KERNEL_VER/build ]; then
+    mkdir linux-$KERNEL_VER/build
 fi
 
 if [ ! xeno-build ]; then
@@ -57,9 +53,9 @@ fi
 # 2. Compile kernel
 
 # Patch kernel
-xenomai-3.0.6/scripts/prepare-kernel.sh --linux=linux-4.4.43 --ipipe=ipipe-core-4.4.43-x86-8.patch --arch=x86
+xenomai-$XENO_VER/scripts/prepare-kernel.sh --linux=linux-$KERNEL_VER --ipipe=ipipe-core-$IPIPE_VER.patch --arch=x86
 
-pushd linux-4.4.43
+pushd linux-$KERNEL_VER
 # compile kernel
 #arith OK
 #bufp skipped (no kernel support)
@@ -93,15 +89,15 @@ make mrproper
 #sudo make O=build install
 make-kpkg clean
 cp ../x86rt_config .config
-fakeroot make-kpkg --initrd --append-to-version=-custom -j4 kernel_image kernel_headers
-make-kpkg O=../build kernel_image kernel_headers
+fakeroot make-kpkg --initrd -j4 kernel_image kernel_headers
+#make-kpkg O=../build kernel_image kernel_headers
 
 #pushd /lib/modules/4.4.43
 #sudo update-initramfs –c –k 4.4.43
 #sudo update-grub
 #popd
 popd
-sudo dpkg -i linux-*-4.4.43-xenomai-3.0.6*.deb
+#sudo dpkg -i linux-*-$KERNEL_VER-xenomai-$XENO_VER*.deb
 
 
 # reboot enter rt-linux
@@ -120,6 +116,15 @@ sudo dpkg -i linux-*-4.4.43-xenomai-3.0.6*.deb
 
 # reboot
 # 4. compile linuxcnc
+
+# Fetch linuxcnc
+#if [ ! -f v2.7.14 ]; then
+#wget https://codeload.github.com/LinuxCNC/linuxcnc/tar.gz/v2.7.14
+#fi
+#
+#if [ ! -d linuxcnc-2.7.14 ]; then
+#tar xf v2.7.14
+#fi 
 
 #pushd linuxcnc-2.7.14
 #pushd debian/
