@@ -142,6 +142,13 @@ popd
 #sudo make setuid
 #popd
 
+## 打包linuxcnc
+# git clone --depth 1 https://github.com/LinuxCNC/linuxcnc.git
+# cd linuxcnc
+# patch < linuxcnc-xenomai.diff
+# dpkg-buildpackage
+
+
 #命令行参数添加孤立cpu。
 #修改/boot/grub/grub.conf文件，比如孤立cpu5~8核（cpu id对应4~7），添加isolcpus=4,5,6,7至内核命令行，逗号分隔。
 # isolcpus=2,3 xenomai.supported_cpus=0xc
