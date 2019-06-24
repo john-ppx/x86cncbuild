@@ -145,7 +145,7 @@ popd
 ## 打包linuxcnc
 # git clone --depth 1 https://github.com/LinuxCNC/linuxcnc.git
 # cd linuxcnc
-# patch < linuxcnc-xenomai.diff
+# patch -p1 < linuxcnc-xenomai.diff
 # dpkg-buildpackage
 
 
