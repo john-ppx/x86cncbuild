@@ -89,7 +89,8 @@ make mrproper
 #sudo make O=build modules_install
 #sudo make O=build install
 make-kpkg clean
-cp ../x86rt_config .config
+#cp ../x86rt_config .config
+make menuconfig
 fakeroot make-kpkg --initrd -j4 kernel_image kernel_headers
 #make-kpkg O=../build kernel_image kernel_headers
 
@@ -116,41 +117,19 @@ popd
 #popd
 cd xenomai-$XENO_VER
 patch -p0 < ../xenomai.patch
-dpkg-buildpackges
+dpkg-buildpackge
 
 
 
 # reboot
 # 4. compile linuxcnc
 
-# Fetch linuxcnc
-#if [ ! -f v2.7.14 ]; then
-#wget https://codeload.github.com/LinuxCNC/linuxcnc/tar.gz/v2.7.14
-#fi
-#
-#if [ ! -d linuxcnc-2.7.14 ]; then
-#tar xf v2.7.14
-#fi 
-
-#pushd linuxcnc-2.7.14
-#pushd debian/
-#configure uspace
-#popd
-#dpkg-buildpackage -b -uc
-#popd
-
-#pushd linuxcnc-dev
-#./autogen.sh
-#./configure --with-realtime=uspace XENOMAI_CONFIG=/usr/xenomai/bin/xeno-config
-#make
-#sudo make setuid
-#popd
-
 ## 打包linuxcnc
-# git clone --depth 1 https://github.com/LinuxCNC/linuxcnc.git
-# cd linuxcnc
-# patch -p1 < linuxcnc-xenomai.diff
-# dpkg-buildpackage
+git clone --depth 1 https://github.com/LinuxCNC/linuxcnc.git
+cd linuxcnc
+patch -p1 < ../linuxcnc-xenomai.diff
+./debian/configure uspace
+dpkg-buildpackage
 
 
 #命令行参数添加孤立cpu。
