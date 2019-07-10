@@ -1,0 +1,12 @@
+--- debian/rules	2019-01-14 23:11:19.000000000 +0800
++++ debian/rules	2019-06-27 17:49:04.717390898 +0800
+@@ -16,7 +16,8 @@
+ CONFIG_OPTS = --prefix=/usr \
+             --includedir=/usr/include/xenomai \
+             --mandir=/usr/share/man \
+-	    --with-testdir=/usr/lib/xenomai/testsuite
++	    --with-testdir=/usr/lib/xenomai/testsuite \
++        --with-core=cobalt --enable-smp --enable-pshared --enable-dlopen-libs
+ 
+ ifneq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE))
+ 	CONFIG_OPTS += --build $(DEB_BUILD_GNU_TYPE) --host $(DEB_HOST_GNU_TYPE)

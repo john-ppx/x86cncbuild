@@ -114,6 +114,10 @@ popd
 #echo /usr/xenomai/lib > /etc/ld.so.conf.d/xenomai.conf
 #sudo ldconfig
 #popd
+cd xenomai-$XENO_VER
+patch -p0 < ../xenomai.patch
+dpkg-buildpackges
+
 
 
 # reboot
