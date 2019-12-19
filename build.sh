@@ -1,8 +1,8 @@
 
 
 XENO_VER=3.0.8
-IPIPE_VER=4.9.38-x86-4
-KERNEL_VER=4.9.38
+IPIPE_VER=4.14.128-x86-5
+KERNEL_VER=4.14.128
 
 # kernel nessary
 sudo apt-get install gcc kernel-package libc6-dev tk8.6 libncurses5-dev fakeroot bin86 libssl-dev build-essential
