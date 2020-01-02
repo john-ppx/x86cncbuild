@@ -1,8 +1,8 @@
 
 
 XENO_VER=3.0.8
-IPIPE_VER=4.9.38-x86-4
-KERNEL_VER=4.9.38
+IPIPE_VER=4.14.128-x86-5
+KERNEL_VER=4.14.128
 
 # kernel nessary
 sudo apt-get install gcc kernel-package libc6-dev tk8.6 libncurses5-dev fakeroot bin86 libssl-dev build-essential
@@ -32,6 +32,8 @@ wget https://mirrors.aliyun.com/linux-kernel/v4.x/linux-$KERNEL_VER.tar.gz
 #wget https://mirrors.edge.kernel.org/pub/linux/kernel/v4.x/linux-$KERNEL_VER.tar.gz 
 fi
 
+exit
+
 if [ ! -d xenomai-$XENO_VER ]; then
 tar xjf xenomai-$XENO_VER.tar.bz2
 fi
@@ -55,7 +57,6 @@ fi
 # Patch kernel
 xenomai-$XENO_VER/scripts/prepare-kernel.sh --linux=linux-$KERNEL_VER --ipipe=ipipe-core-$IPIPE_VER.patch --arch=x86
 
-exit
 pushd linux-$KERNEL_VER
 # compile kernel
 #arith OK
@@ -129,7 +130,7 @@ git clone --depth 1 https://github.com/LinuxCNC/linuxcnc.git
 cd linuxcnc
 patch -p1 < ../linuxcnc-xenomai.diff
 ./debian/configure uspace
-dpkg-buildpackage
+dpkg-buildpackage -uc -us
 
 
 #命令行参数添加孤立cpu。
